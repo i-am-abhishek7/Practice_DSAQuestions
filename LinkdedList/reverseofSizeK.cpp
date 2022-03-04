@@ -13,6 +13,8 @@ class ListNode {
 };
 
 ListNode* reverseOfKSize(ListNode* head, int k) {
+  if(head == NULL) return NULL;
+
   ListNode* prevNode = NULL;
   ListNode* currNode = head;
   ListNode* nextNode = NULL;
