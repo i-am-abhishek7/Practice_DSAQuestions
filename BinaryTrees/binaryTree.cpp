@@ -79,15 +79,29 @@ bool balancBinaryTree(BinaryTreeNode* root) {
   return dfsHeight(root) != -1;
 }
 
+// The time complexity of this code is O(n^2)
+int diameter(BinaryTreeNode* root) {
+  if(root == NULL) return 0;
+  int option1 = maxDepth(root->left) + maxDepth(root->right);
+  int option2 = diameter(root->left);
+  int option3 = diameter(root->right);
+
+  return max(option1, max(option2, option3));
+}
+
+
 int main() {
-  BinaryTreeNode* root = new BinaryTreeNode(10);
-  root->left = new BinaryTreeNode(20);
-  root->right = new BinaryTreeNode(30);
-  root->right->left = new BinaryTreeNode(40);
-  root->right->left->left = new BinaryTreeNode(50);
-  root->right->right = new BinaryTreeNode(60);
+  BinaryTreeNode* root = new BinaryTreeNode(1);
+  root->left = new BinaryTreeNode(2);
+  root->right = new BinaryTreeNode(7);
+  root->left->left = new BinaryTreeNode(3);
+  root->left->right = new BinaryTreeNode(5);
+  root->left->left->left = new BinaryTreeNode(4);
+  root->left->right->right = new BinaryTreeNode(6);
   cout << "Height Of Binary Tree is: " << maxDepth(root) << endl;
   cout << balancBinaryTree(root);
+  cout << endl;
+  cout << "The diameter of binary tree is: " << diameter(root) << endl;
   // vector<int> result = preOrderIterative(root);
   // for(int i = 0; i < result.size(); i++) cout << result[i] << " ";
   // inOrderTraversal(root);
