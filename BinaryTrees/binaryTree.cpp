@@ -60,6 +60,47 @@ vector<int> preOrderIterative(BinaryTreeNode* root) {
   return ans;
 }
 
+int getPosition(int in[], int start, int end, int curr) {
+  for(int i = start; i <= end; i++) {
+    if(in[i] == curr) return i;
+  }
+  return -1;
+}
+
+// Buid Tree from inorder and preorder
+BinaryTreeNode* buildTree(int pre[], int in[], int start, int end) {
+  static int index = 0;
+  
+  if(start > end) return NULL;
+
+  int curr = pre[index];
+  index++;
+  BinaryTreeNode* currNode = new BinaryTreeNode(curr);
+  int position = getPosition(in, start, end, curr);
+  currNode->left = buildTree(pre, in, start, position-1);
+  currNode->right = buildTree(pre, in, position+1, end);
+  return currNode;
+}
+
+int getPositionOther(int inorder[], int start, int end, int curr) {
+  for(int i = start; i <= end; i++) if(inorder[i] == curr) return i;
+}
+
+// Build Tree from postorder and inorder
+BinaryTreeNode* buildTreeOther(int pos[], int in[], int start, int end) {
+  static int index = end;
+
+  if(start > end) return NULL;
+  int curr = pos[index];
+  index--;
+
+  BinaryTreeNode* currNode = new BinaryTreeNode(curr);
+  int position = getPositionOther(in, start, end, curr);
+  currNode->right = buildTreeOther(pos, in, position+1, end);
+  currNode->left = buildTreeOther(pos, in, start, position-1);
+}
+
+
 int maxDepth(BinaryTreeNode* root) {
   if(root == NULL) return 0;
   return 1 + max(maxDepth(root->left), maxDepth(root->right));
@@ -129,6 +170,17 @@ int main() {
   cout << "The diameter of binary tree is: " << diameter(root) << endl;
   pair<int, int> p = heightDiameter(root);
   cout << "Height: " << p.first << endl <<  "Diameter: " << p.second << endl;
+
+  int preOrder[] = {1, 2, 4, 3, 5};
+  int inOrder[] = {4, 2, 1, 5, 3};
+  BinaryTreeNode* newRoot = buildTree(preOrder, inOrder, 0, 4);
+  inOrderTraversal(newRoot);
+  cout << endl;
+  int postOrder[] = {1, 2, 4, 3, 5};
+  int inorder[] = {4, 2, 1, 5, 3};
+  BinaryTreeNode* newRootOther = buildTreeOther(postOrder, inorder, 0, 4);
+  inOrderTraversal(newRootOther);
+  // BinaryTreeNode* newRoot = buildTree(preOrder, inOrder, 0, 4);
   // vector<int> result = preOrderIterative(root);
   // for(int i = 0; i < result.size(); i++) cout << result[i] << " ";
   // inOrderTraversal(root);
