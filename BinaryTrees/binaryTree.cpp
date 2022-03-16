@@ -44,6 +44,26 @@ vector<vector<int>> levelOrderTraversal(BinaryTreeNode* root) {
   return ans;
 }
 
+// Level order traversal
+void printLevelOrder(BinaryTreeNode* root) {
+  if(root == NULL) return;
+  queue<BinaryTreeNode*> q;
+  q.push(root);
+  q.push(NULL);
+
+  while(!q.empty()) {
+    BinaryTreeNode* node = q.front();
+    q.pop();
+
+    if(node != NULL) {
+      if(node->left) q.push(node->left);
+      if(node->right) q.push(node->right);
+    } else{ 
+      if(!q.empty()) q.push(NULL);
+    }
+  }
+}
+
 vector<int> preOrderIterative(BinaryTreeNode* root) {
   vector<int> ans;
   if(root == NULL) return ans;
@@ -156,6 +176,47 @@ pair<int, int> heightDiameter(BinaryTreeNode* root) {
   return p;
 }
 
+void leftTraversal(BinaryTreeNode* root, vector<int>& ans) {
+  if(root == NULL) return;
+  if(root->left == NULL && root->right == NULL) return;
+
+  ans.push_back(root->data);
+  if(root->left) leftTraversal(root->left, ans);
+  else leftTraversal(root->right, ans);
+}
+
+void leafTraversal(BinaryTreeNode* root, vector<int>& ans) {
+  if(root == NULL) return;
+  if(root->left == NULL && root->right == NULL) {
+    ans.push_back(root->data);
+    return;
+  }
+  
+  leafTraversal(root->left, ans);
+  leafTraversal(root->right, ans);
+}
+
+void rightTraversal(BinaryTreeNode* root, vector<int>& ans) {
+  if(root == NULL) return;
+  if(root->left == NULL && root->right == NULL) return;
+
+  if(root->right) rightTraversal(root->right, ans);
+  else rightTraversal(root->left, ans);
+  ans.push_back(root->data);
+}
+
+// Boundary Traversal
+vector<int> boundaryTraversal(BinaryTreeNode* root) {
+  vector<int> ans;
+  if(root == NULL) return ans;
+
+  leftTraversal(root->left, ans);
+  leafTraversal(root->left, ans);
+  leafTraversal(root->right, ans);
+  rightTraversal(root->right, ans);
+  return ans;
+}
+
 int main() {
   BinaryTreeNode* root = new BinaryTreeNode(1);
   root->left = new BinaryTreeNode(2);
@@ -170,16 +231,18 @@ int main() {
   cout << "The diameter of binary tree is: " << diameter(root) << endl;
   pair<int, int> p = heightDiameter(root);
   cout << "Height: " << p.first << endl <<  "Diameter: " << p.second << endl;
-
-  int preOrder[] = {1, 2, 4, 3, 5};
-  int inOrder[] = {4, 2, 1, 5, 3};
-  BinaryTreeNode* newRoot = buildTree(preOrder, inOrder, 0, 4);
-  inOrderTraversal(newRoot);
-  cout << endl;
-  int postOrder[] = {1, 2, 4, 3, 5};
-  int inorder[] = {4, 2, 1, 5, 3};
-  BinaryTreeNode* newRootOther = buildTreeOther(postOrder, inorder, 0, 4);
-  inOrderTraversal(newRootOther);
+  printLevelOrder(root);
+  vector<int> boundaryNodes = boundaryTraversal(root);
+  for(int i = 0; i < boundaryNodes.size(); i++) cout << boundaryNodes[i] << " ";
+  // int preOrder[] = {1, 2, 4, 3, 5};
+  // int inOrder[] = {4, 2, 1, 5, 3};
+  // BinaryTreeNode* newRoot = buildTree(preOrder, inOrder, 0, 4);
+  // inOrderTraversal(newRoot);
+  // cout << endl;
+  // int postOrder[] = {1, 2, 4, 3, 5};
+  // int inorder[] = {4, 2, 1, 5, 3};
+  // BinaryTreeNode* newRootOther = buildTreeOther(postOrder, inorder, 0, 4);
+  // inOrderTraversal(newRootOther);
   // BinaryTreeNode* newRoot = buildTree(preOrder, inOrder, 0, 4);
   // vector<int> result = preOrderIterative(root);
   // for(int i = 0; i < result.size(); i++) cout << result[i] << " ";
