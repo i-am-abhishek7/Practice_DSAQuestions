@@ -217,23 +217,45 @@ vector<int> boundaryTraversal(BinaryTreeNode* root) {
   return ans;
 }
 
+// Top view of binary Tree
+void topView(BinaryTreeNode* root) {
+  if(root == NULL) return;
+
+  map<int, int> mapp;
+  queue<pair<BinaryTreeNode*, int>> q;
+  q.push({root, 0});
+
+  while(!q.empty()) {
+    BinaryTreeNode* tempNode = q.front().first;
+    int height = q.front().second;
+    q.pop();
+
+    if(!mapp[height]) mapp[height] = tempNode->data;
+    if(tempNode->left) q.push({tempNode->left, height-1});
+    if(tempNode->right) q.push({tempNode->right, height+1});
+  }
+
+  for(auto i : mapp) cout << i.second << " ";
+}
+
 int main() {
   BinaryTreeNode* root = new BinaryTreeNode(1);
   root->left = new BinaryTreeNode(2);
-  root->right = new BinaryTreeNode(7);
-  root->left->left = new BinaryTreeNode(3);
+  root->left->left = new BinaryTreeNode(4);
   root->left->right = new BinaryTreeNode(5);
-  root->left->left->left = new BinaryTreeNode(4);
-  root->left->right->right = new BinaryTreeNode(6);
-  cout << "Height Of Binary Tree is: " << maxDepth(root) << endl;
-  cout << balancBinaryTree(root);
-  cout << endl;
-  cout << "The diameter of binary tree is: " << diameter(root) << endl;
-  pair<int, int> p = heightDiameter(root);
-  cout << "Height: " << p.first << endl <<  "Diameter: " << p.second << endl;
-  printLevelOrder(root);
-  vector<int> boundaryNodes = boundaryTraversal(root);
-  for(int i = 0; i < boundaryNodes.size(); i++) cout << boundaryNodes[i] << " ";
+  root->right = new BinaryTreeNode(3);
+  root->right->right = new BinaryTreeNode(7);
+  root->right->left =  new BinaryTreeNode(6);
+  topView(root);
+  // cout << "Height Of Binary Tree is: " << maxDepth(root) << endl;
+  // cout << balancBinaryTree(root);
+  // cout << endl;
+  // cout << "The diameter of binary tree is: " << diameter(root) << endl;
+  // pair<int, int> p = heightDiameter(root);
+  // cout << "Height: " << p.first << endl <<  "Diameter: " << p.second << endl;
+  // printLevelOrder(root);
+  // vector<int> boundaryNodes = boundaryTraversal(root);
+  // for(int i = 0; i < boundaryNodes.size(); i++) cout << boundaryNodes[i] << " ";
   // int preOrder[] = {1, 2, 4, 3, 5};
   // int inOrder[] = {4, 2, 1, 5, 3};
   // BinaryTreeNode* newRoot = buildTree(preOrder, inOrder, 0, 4);
