@@ -280,6 +280,27 @@ vector<int> rightView(BinaryTreeNode* root) {
   return ans;
 }
 
+vector<int> bottomView(BinaryTreeNode* root) {
+  vector<int> ans;
+  if(root == NULL) return ans;
+  
+  map<int, int> mapp;
+  queue<pair<BinaryTreeNode*, int>> q;
+  q.push({root, 0});
+
+  while(!q.empty()) {
+    BinaryTreeNode* frontNode = q.front().first;
+    int height = q.front().second;
+    q.pop();
+
+    mapp[height] = frontNode->data;
+    if(frontNode->left) q.push({frontNode->left, height-1});
+    if(frontNode->right) q.push({frontNode->right, height+1});
+  }
+  for(auto i : mapp) ans.push_back(i.second);
+  return ans;
+}
+
 int main() {
   BinaryTreeNode* root = new BinaryTreeNode(1);
   root->left = new BinaryTreeNode(2);
@@ -289,8 +310,10 @@ int main() {
   root->right = new BinaryTreeNode(3);
   root->right->right = new BinaryTreeNode(7);
   root->right->left =  new BinaryTreeNode(6);
-  vector<int> result = rightView(root);
-  for(int i = 0; i < result.size(); i++) cout << result[i] << " ";  
+  vector<int> result = bottomView(root);
+  for(auto i : result) cout << i << " ";
+  // vector<int> result = rightView(root);
+  // for(int i = 0; i < result.size(); i++) cout << result[i] << " ";  
   // vector<int> result = leftView(root);
   // for(int i = 0; i < result.size(); i++) cout << result[i] << " ";
   // topView(root);
