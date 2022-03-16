@@ -259,6 +259,27 @@ vector<int> leftView(BinaryTreeNode* root) {
   return ans;
 }
 
+vector<int> rightView(BinaryTreeNode* root) {
+  vector<int> ans;
+  if(root == NULL) return ans;
+
+  queue<BinaryTreeNode*> q;
+  q.push(root);
+
+  while(!q.empty()) {
+    int size = q.size();
+    BinaryTreeNode* frontNode = q.front();
+    ans.push_back(frontNode->data);
+    while(size--) {
+      BinaryTreeNode* front = q.front();
+      q.pop();
+      if(front->right) q.push(front->right);
+      if(front->left) q.push(front->left);
+    }
+  }
+  return ans;
+}
+
 int main() {
   BinaryTreeNode* root = new BinaryTreeNode(1);
   root->left = new BinaryTreeNode(2);
@@ -268,8 +289,10 @@ int main() {
   root->right = new BinaryTreeNode(3);
   root->right->right = new BinaryTreeNode(7);
   root->right->left =  new BinaryTreeNode(6);
-  vector<int> result = leftView(root);
-  for(int i = 0; i < result.size(); i++) cout << result[i] << " ";
+  vector<int> result = rightView(root);
+  for(int i = 0; i < result.size(); i++) cout << result[i] << " ";  
+  // vector<int> result = leftView(root);
+  // for(int i = 0; i < result.size(); i++) cout << result[i] << " ";
   // topView(root);
   // cout << "Height Of Binary Tree is: " << maxDepth(root) << endl;
   // cout << balancBinaryTree(root);
