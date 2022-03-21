@@ -315,6 +315,28 @@ BinaryTreeNode* lca(BinaryTreeNode* root, int n1, int n2) {
   else return NULL;
 }
 
+void sumKHelper(BinaryTreeNode* root, int k, int& count, vector<int> path) {
+  if(root == NULL) return;
+  path.push_back(root->data);
+  sumKHelper(root->left, k, count, path);
+  sumKHelper(root->right, k, count, path);
+
+  int sum = 0;
+  for(int i = path.size()-1; i >= 0; i--) {
+    sum+= path[i];
+    if(sum == k) count++;
+  }
+  path.pop_back();
+}
+
+// K Sum path
+int sumK(BinaryTreeNode* root, int k) {
+  vector<int> path;
+  int count = 0;
+  sumKHelper(root, k, count, path);
+  return count;
+}
+
 int main() {
   BinaryTreeNode* root = new BinaryTreeNode(1);
   root->left = new BinaryTreeNode(2);
@@ -324,7 +346,8 @@ int main() {
   root->right = new BinaryTreeNode(3);
   root->right->right = new BinaryTreeNode(7);
   root->right->left =  new BinaryTreeNode(6);
-  cout << "LCA of node 8 and 5 is: " << lca(root, 8, 5)->data << endl; 
+  cout << "K Sum Path of node 5 is: " << sumK(root, 5) << endl;
+  // cout << "LCA of node 8 and 5 is: " << lca(root, 8, 5)->data << endl; 
   // vector<int> result = bottomView(root);
   // for(auto i : result) cout << i << " ";
   // vector<int> result = rightView(root);
