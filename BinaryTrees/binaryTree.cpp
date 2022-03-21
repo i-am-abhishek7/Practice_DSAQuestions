@@ -301,6 +301,20 @@ vector<int> bottomView(BinaryTreeNode* root) {
   return ans;
 }
 
+// Lowest Common Ancestor of binary tree
+BinaryTreeNode* lca(BinaryTreeNode* root, int n1, int n2) {
+  if(root == NULL) return NULL;
+  if(root->data == n1 || root->data == n2) return root;
+
+  BinaryTreeNode* leftAns = lca(root->left, n1, n2);
+  BinaryTreeNode* rightAns = lca(root->right, n1, n2);
+
+  if(leftAns != NULL && rightAns != NULL) return root;
+  else if(leftAns != NULL && rightAns == NULL) return leftAns;
+  else if(leftAns == NULL && rightAns != NULL) return rightAns;
+  else return NULL;
+}
+
 int main() {
   BinaryTreeNode* root = new BinaryTreeNode(1);
   root->left = new BinaryTreeNode(2);
@@ -310,8 +324,9 @@ int main() {
   root->right = new BinaryTreeNode(3);
   root->right->right = new BinaryTreeNode(7);
   root->right->left =  new BinaryTreeNode(6);
-  vector<int> result = bottomView(root);
-  for(auto i : result) cout << i << " ";
+  cout << "LCA of node 8 and 5 is: " << lca(root, 8, 5)->data << endl; 
+  // vector<int> result = bottomView(root);
+  // for(auto i : result) cout << i << " ";
   // vector<int> result = rightView(root);
   // for(int i = 0; i < result.size(); i++) cout << result[i] << " ";  
   // vector<int> result = leftView(root);
