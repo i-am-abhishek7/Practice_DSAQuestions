@@ -22,6 +22,54 @@ bool hasNode(BinaryTreeNode* &root, int data) {
   else return hasNode(root->left, data);
 }
 
+BinaryTreeNode* nodeToDelete(BinaryTreeNode* &root, int data) {
+  if(root == NULL) return root;
+  if(root->data == data) {
+    if(root->left == NULL && root->right == NULL) {
+      delete root;
+      return NULL;
+    } 
+    if(root->left != NULL && root->right == NULL) {
+      BinaryTreeNode* temp = root->left;
+      delete root;
+      return temp;
+    }
+    if(root->left == NULL && root->right != NULL) {
+      BinaryTreeNode* temp = root->right;
+      delete root;
+      return temp;
+    }
+    if(root->left != NULL && root->right != NULL) {
+      int mivVal = minVal(root->right)->data;
+      root->data = minVal;
+      root->right = nodeToDelete(root->right, minVal);
+      return root;
+    }
+  } else if(root->data > data) {
+    root->left = nodeToDelete(root->left, data);
+    return root;
+  } else {
+    root->right = nodeToDelete(root->right, data);
+    return root;
+  }
+}
+
+BinaryTreeNode* minVal(BinaryTreeNode* &root) {
+  BinaryTreeNode* temp = root;
+  while(temp->left != NULL) {
+    temp = temp->left;
+  }
+  return temp;
+}
+
+BinaryTreeNode* maxVal(BinaryTreeNode* &root) {
+  BinaryTreeNode* temp = root;
+  while(temp->right != NULL) {
+    temp = temp->right;
+  }
+  return temp;
+}
+
 void takeInput(BinaryTreeNode* &root) {
   int data;
   cin >> data;
