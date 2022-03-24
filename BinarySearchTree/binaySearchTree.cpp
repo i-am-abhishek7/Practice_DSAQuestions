@@ -15,6 +15,13 @@ BinaryTreeNode* insertIntoBST(BinaryTreeNode* &root, int data) {
   return root;
 }
 
+bool hasNode(BinaryTreeNode* &root, int data) {
+  if(root == NULL) return false;
+  if(root->data == data) return true;
+  if(data > root->data) return hasNode(root->right, data);
+  else return hasNode(root->left, data);
+}
+
 void takeInput(BinaryTreeNode* &root) {
   int data;
   cin >> data;
@@ -35,5 +42,6 @@ void inorderTraversal(BinaryTreeNode* &root) {
 int main() {
   BinaryTreeNode* root = NULL;
   takeInput(root);
-  inorderTraversal(root);
+  cout << hasNode(root, 8);
+  // inorderTraversal(root);
 }
