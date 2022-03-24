@@ -70,6 +70,19 @@ int maxVal(BinaryTreeNode* &root) {
   return temp->data;
 }
 
+bool isBST(BinaryTreeNode* root, int min, int max){
+  if(root == NULL) return true;
+  if(root->data >= min && root->data <= max) {
+    bool leftAns = isBST(root->left, min, root->data);
+    bool rightAns = isBST(root->right, root->data, max);
+    return leftAns && rightAns;
+  } else return false;
+}
+
+bool validateBST(BinaryTreeNode* &root) {
+  return isBST(root, INT_MIN, INT_MAX);
+}
+
 void takeInput(BinaryTreeNode* &root) {
   int data;
   cin >> data;
@@ -93,4 +106,5 @@ int main() {
   cout << hasNode(root, 8);
   root = nodeToDelete(root, 70);
   inorderTraversal(root);
+  cout << validateBST(root) << endl;
 }
