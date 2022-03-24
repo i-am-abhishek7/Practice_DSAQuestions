@@ -40,9 +40,9 @@ BinaryTreeNode* nodeToDelete(BinaryTreeNode* &root, int data) {
       return temp;
     }
     if(root->left != NULL && root->right != NULL) {
-      int mivVal = minVal(root->right)->data;
-      root->data = minVal;
-      root->right = nodeToDelete(root->right, minVal);
+      int min = minVal(root->right);
+      root->data = min;
+      root->right = nodeToDelete(root->right, min);
       return root;
     }
   } else if(root->data > data) {
@@ -54,20 +54,20 @@ BinaryTreeNode* nodeToDelete(BinaryTreeNode* &root, int data) {
   }
 }
 
-BinaryTreeNode* minVal(BinaryTreeNode* &root) {
+int minVal(BinaryTreeNode* &root) {
   BinaryTreeNode* temp = root;
   while(temp->left != NULL) {
     temp = temp->left;
   }
-  return temp;
+  return temp->data;
 }
 
-BinaryTreeNode* maxVal(BinaryTreeNode* &root) {
+int maxVal(BinaryTreeNode* &root) {
   BinaryTreeNode* temp = root;
   while(temp->right != NULL) {
     temp = temp->right;
   }
-  return temp;
+  return temp->data;
 }
 
 void takeInput(BinaryTreeNode* &root) {
@@ -91,5 +91,6 @@ int main() {
   BinaryTreeNode* root = NULL;
   takeInput(root);
   cout << hasNode(root, 8);
-  // inorderTraversal(root);
+  root = nodeToDelete(root, 70);
+  inorderTraversal(root);
 }
