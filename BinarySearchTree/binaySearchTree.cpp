@@ -83,6 +83,20 @@ bool validateBST(BinaryTreeNode* &root) {
   return isBST(root, INT_MIN, INT_MAX);
 }
 
+int inorder(BinaryTreeNode* root, int& i, int k) {
+  if(root == NULL) return -1;
+  int leftAns = inorder(root->left, i, k);
+  if(leftAns != -1) return leftAns;
+  i++;
+  if(i == k) return root->data;
+  return inorder(root->right, i, k);
+}
+
+int kthSmallestElement(BinaryTreeNode* root, int k) {
+  int i = 0;
+  return inorder(root, i, k);
+} 
+
 void takeInput(BinaryTreeNode* &root) {
   int data;
   cin >> data;
