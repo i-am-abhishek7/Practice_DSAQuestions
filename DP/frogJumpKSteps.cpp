@@ -33,12 +33,27 @@ int f2(int idx, int heights[], int k, vector<int>& dp) {
 }
 
 int main() {
-  int n;
-  cin >> n;
+  int n, k;
+  cin >> n >> k;
   int arr[n];
   for(int i = 0; i < n; i++) cin >> arr[i];
-  // cout << "Energy used by the frog is: " << f1(n-1, arr, 5) << endl;
-  vector<int> dp(n+1, -1);
-    cout << "Energy used by the frog is: " << f2(n-1, arr, 5, dp) << endl;
+  // cout << "Energy used by the frog is: " << f1(n-1, arr, k) << endl;
+  // vector<int> dp(n+1, -1);
+  //   cout << "Energy used by the frog is: " << f2(n-1, arr, k, dp) << endl;
+
+  // Using Tabulation Method
+  vector<int> dp(n);
+  dp[0] = 0;
+  for(int i = 1; i < n; i++) {
+    int mmSteps = INT_MAX;
+    for(int j = 1; j <= k; j++) {
+      if(i - j >= 0) {
+        int jumps = dp[i-j] + abs(a[i] - a[i-j]);
+        mmSteps = min(jumps, mmSteps);
+      }
+    }
+    dp[i] = mmSteps;
+  }
+  cout << "Energy used by the frog is: " << dp[n-1] << endl;
   return 0;
 }
