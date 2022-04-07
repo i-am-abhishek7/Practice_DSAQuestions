@@ -48,7 +48,7 @@ int main() {
     int mmSteps = INT_MAX;
     for(int j = 1; j <= k; j++) {
       if(i - j >= 0) {
-        int jumps = dp[i-j] + abs(a[i] - a[i-j]);
+        int jumps = dp[i-j] + abs(arr[i] - arr[i-j]);
         mmSteps = min(jumps, mmSteps);
       }
     }
