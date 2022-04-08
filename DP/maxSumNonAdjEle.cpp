@@ -50,5 +50,22 @@ int main() {
     dp[i] = max(pick, notPick);
   }
   cout << "The maximum sum of non adjacent elements is: " << dp[n-1];
+
+  // Space Optimization
+  // Time Complexity: O(n)
+  // Space Complexity: O(1)
+  int prev = nums[0];
+  int prev2 = 0;
+  for(int i = 1; i < nums.size(); i++) {
+    int take = nums[i];
+    if(i > 1) take += prev2;
+
+    int notTake = prev;
+    int curri = max(take, notTake);
+
+    prev2 = prev;
+    prev = curri;
+  } 
+  cout << "The maximun sum of non adjacent elements is: " << prev << endl;
   return 0;
 }
