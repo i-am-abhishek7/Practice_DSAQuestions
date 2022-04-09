@@ -13,6 +13,10 @@ int f(int row, int col) {
   return up + left;
 }
 
+
+// Using Memoization
+// Time Complexity: O(n*m)
+// Space Complexity: O(n*m) + O(m-1, n-1)
 int f1(int row, int col, vector<vector<int>>& dp) {
   if(row == 0 && col == 0) return 1;
   if(row < 0 || col < 0) return 0;
