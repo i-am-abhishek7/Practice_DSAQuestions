@@ -13,6 +13,18 @@ int f(int row, int col) {
   return up + left;
 }
 
+int f1(int row, int col, vector<vector<int>>& dp) {
+  if(row == 0 && col == 0) return 1;
+  if(row < 0 || col < 0) return 0;
+
+  if(dp[row][col] != -1) return dp[row][col];
+  
+  int up = f1(row-1, col, dp);
+  int left = f1(row, col-1, dp);
+  
+  return dp[row][col] = up + left;
+}
+
 int main() {
   int n, m;
   cin >> n >> m;
@@ -23,6 +35,9 @@ int main() {
     }
   }
 
-  cout << "Ans: " << f(n-1, m-1) << endl;
+  // cout << "Ans: " << f(n-1, m-1) << endl;
+
+  vector<vector<int>> dp(n, vector<int>(m, -1));
+  cout << "Ans: " << f1(n-1, m-1, dp) << endl;
   return 0;
 }
