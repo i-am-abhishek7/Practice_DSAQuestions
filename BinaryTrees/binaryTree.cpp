@@ -337,6 +337,24 @@ int sumK(BinaryTreeNode* root, int k) {
   return count;
 }
 
+int maxPathSumTreeUtil(BinaryTreeNode* root, int &ans) {
+  if(root == NULL) return 0;
+  int left = maxPathSumTreeUtil(root->left, ans);
+  int right = maxPathSumTreeUtil(root->right, ans);
+
+  int nodeMax = max(max(root->data, root->data + left + right), max(root->data + left, root->data + right));
+
+  ans = max(ans, nodeMax);
+  int singlePathSum = max(root->data, max(root->data + left, root->data + right));
+  return singlePathSum;
+}
+
+int maxPathSumTree(BinaryTreeNode* root){
+  int ans = INT_MIN;
+  maxPathSumTreeUtil(root, ans);
+  return ans;
+}
+
 int main() {
   BinaryTreeNode* root = new BinaryTreeNode(1);
   root->left = new BinaryTreeNode(2);
@@ -347,6 +365,7 @@ int main() {
   root->right->right = new BinaryTreeNode(7);
   root->right->left =  new BinaryTreeNode(6);
   cout << "K Sum Path of node 5 is: " << sumK(root, 5) << endl;
+  cout << maxPathSumTree(root) << endl;
   // cout << "LCA of node 8 and 5 is: " << lca(root, 8, 5)->data << endl; 
   // vector<int> result = bottomView(root);
   // for(auto i : result) cout << i << " ";
